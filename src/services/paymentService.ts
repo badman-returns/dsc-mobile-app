@@ -100,7 +100,9 @@ export class PaymentService {
       await this.verifyPayment(
         payload.apiBaseUrl,
         payload.orderId,
-        data.razorpay_payment_id
+        data.razorpay_payment_id,
+        data.razorpay_order_id,
+        data.razorpay_signature
       );
 
       return {
@@ -131,7 +133,9 @@ export class PaymentService {
   private static async verifyPayment(
     apiBaseUrl: string,
     orderId: string,
-    razorpayPaymentId: string
+    razorpayPaymentId: string,
+    razorpayOrderId: string,
+    razorpaySignature: string
   ): Promise<void> {
     try {
       const verifyUrl = `${apiBaseUrl}/api/v1/payment/verify`;
@@ -146,6 +150,8 @@ export class PaymentService {
         body: JSON.stringify({
           orderId,
           razorpayPaymentId,
+          razorpayOrderId,
+          razorpaySignature,
           status: 'confirmed',
         }),
         credentials: 'include', // Include cookies for auth
