@@ -82,6 +82,12 @@ export class PaymentService {
           name: payload.userInfo.name,
         },
         theme: { color: '#5956FC' },
+        method: {
+          upi: true,
+          card: true,
+          wallet: true,
+          netbanking: true,
+        },
         ...(logoBase64 && { image: logoBase64 }), // Add logo if loaded successfully
       };
 
