@@ -8,6 +8,7 @@ export default ({ config }) => ({
     userInterfaceStyle: "light",
     newArchEnabled: true,
     jsEngine: "hermes",
+    icon: "./assets/dilsaycare.png",
     extra: {
       WEB_URL: process.env.WEB_URL || "https://dev.dilsaycare.in",
       eas: {
@@ -29,6 +30,7 @@ export default ({ config }) => ({
     android: {
       package: "com.dilsaycare.mobile",
       adaptiveIcon: {
+        foregroundImage: "./assets/dilsaycare.png",
         backgroundColor: "#ffffff",
       },
       statusBar: {

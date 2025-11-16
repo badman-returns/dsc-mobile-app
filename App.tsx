@@ -5,11 +5,16 @@ import { StatusBar } from 'expo-status-bar';
 import { SplashScreen } from './src/components/SplashScreen';
 import { useAppInitialization } from './src/hooks/useAppInitialization';
 import { PlatformBridge } from './src/services/platformBridge';
+import { PaymentService } from './src/services/paymentService';
 import { getWebUrl, isDevelopment } from './src/config/environment';
 import { createViewportMeta } from './src/utils/webview';
-import { APP_CONFIG } from './src/constants/app';
+import { APP_CONFIG, PAYMENT_MESSAGE_TYPES } from './src/constants/app';
 import { COLORS } from './src/constants/colors';
 import logger from './src/utils/logger';
+import {
+  PaymentRequestPayload,
+  PaymentMessage,
+} from './src/types/payment';
 
 const WEB_URL = getWebUrl();
 
@@ -34,14 +39,45 @@ export default function App() {
     logger.error('WebView error:', syntheticEvent.nativeEvent);
   };
 
-  const handleWebViewMessage = (event: any) => {
+  const handleWebViewMessage = async (event: any) => {
     try {
       const data = JSON.parse(event.nativeEvent.data);
+      
+      // Handle console logs
       if (data.type === 'CONSOLE_LOG') {
         logger.info('[WebView Console]:', data.message);
+        return;
+      }
+
+      // Handle payment requests
+      if (data.type === PAYMENT_MESSAGE_TYPES.PAYMENT_REQUEST) {
+        logger.info('Payment request received from WebView');
+        
+        const paymentData = data as PaymentMessage;
+        const result = await PaymentService.processPayment(
+          paymentData.payload as PaymentRequestPayload
+        );
+
+        // Send result back to WebView
+        const responseMessage = {
+          type: 'razorpay_payment_id' in result 
+            ? PAYMENT_MESSAGE_TYPES.PAYMENT_SUCCESS 
+            : PAYMENT_MESSAGE_TYPES.PAYMENT_FAILURE,
+          payload: result,
+        };
+
+        logger.info('Sending payment response to WebView:', responseMessage);
+        
+        if (!webViewRef.current) {
+          logger.error('WebView ref not available!');
+          return;
+        }
+
+        webViewRef.current.postMessage(JSON.stringify(responseMessage));
+        logger.info('Payment response sent successfully');
       }
     } catch (error) {
-      logger.debug('WebView message:', event.nativeEvent.data);
+      logger.error('Error handling WebView message:', error);
     }
   };
 
