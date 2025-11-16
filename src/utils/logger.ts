@@ -4,7 +4,7 @@ class Logger {
   private enabled: boolean;
 
   constructor() {
-    this.enabled = isDevelopment();
+    this.enabled = true; // Always enable logging for debugging
   }
 
   info(message: string, ...args: any[]) {
