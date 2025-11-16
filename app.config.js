@@ -15,6 +15,7 @@ export default ({ config }) => ({
       }
     },
     splash: {
+      image: "./assets/splash-logo.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
