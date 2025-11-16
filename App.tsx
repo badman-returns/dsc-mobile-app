@@ -42,19 +42,17 @@ export default function App() {
     try {
       const data = JSON.parse(event.nativeEvent.data);
       
-      // Handle console logs
       if (data.type === 'CONSOLE_LOG') {
         return;
       }
 
-      // Handle payment requests
+
       if (data.type === PAYMENT_MESSAGE_TYPES.PAYMENT_REQUEST) {
         const paymentData = data as PaymentMessage;
         const result = await PaymentService.processPayment(
           paymentData.payload as PaymentRequestPayload
         );
 
-        // Send result back to WebView
         const responseMessage = {
           type: 'razorpay_payment_id' in result 
             ? PAYMENT_MESSAGE_TYPES.PAYMENT_SUCCESS 

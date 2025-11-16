@@ -8,23 +8,15 @@ import { loadImageAsBase64 } from '../utils/imageLoader';
 
 import Constants from 'expo-constants';
 
-// For Expo compatibility - will use WebView-based Razorpay
-// Native module (react-native-razorpay) only works in EAS/standalone builds
 let RazorpayCheckout: any = null;
 
 try {
   RazorpayCheckout = require('react-native-razorpay').default;
 } catch (error) {
-  // Silent fallback to WebView
 }
 
 export class PaymentService {
-  /**
-   * Check if native Razorpay is available
-   * Native Razorpay only works in EAS builds (not Expo Go)
-   */
   private static isNativeRazorpayAvailable(): boolean {
-    // In Expo Go, native modules don't work properly
     const isExpoGo = Constants.appOwnership === 'expo';
     
     if (isExpoGo) {
@@ -34,13 +26,9 @@ export class PaymentService {
     return !!(RazorpayCheckout && typeof RazorpayCheckout.open === 'function');
   }
 
-  /**
-   * Initialize Razorpay payment
-   */
   static async processPayment(
     payload: PaymentRequestPayload
   ): Promise<PaymentSuccessPayload | PaymentFailurePayload> {
-    // If native module is not available (Expo Go), return error to fallback to WebView
     if (!this.isNativeRazorpayAvailable()) {
       return {
         orderId: payload.orderId,
@@ -55,7 +43,6 @@ export class PaymentService {
     }
 
     try {
-      // Load logo as base64
       const logoBase64 = await loadImageAsBase64(
         require('../../assets/dilsaycare.png')
       );
@@ -64,7 +51,7 @@ export class PaymentService {
         description: `Session with ${payload.metadata.doctorName}`,
         currency: payload.currency,
         key: payload.razorpayKeyId,
-        amount: payload.amount * 100, // Amount in paise
+        amount: payload.amount * 100,
         name: 'DilSayCare',
         order_id: payload.orderId,
         prefill: {
@@ -79,17 +66,15 @@ export class PaymentService {
           wallet: true,
           netbanking: true,
         },
-        ...(logoBase64 && { image: logoBase64 }), // Add logo if loaded successfully
+        ...(logoBase64 && { image: logoBase64 }),
       };
 
-      // Double-check before calling
-      if (!RazorpayCheckout || typeof RazorpayCheckout.open !== 'function') {
+      if (!RazorpayCheckout || typeof RazorpayCheckout.open === 'function') {
         throw new Error('Razorpay native module not properly initialized');
       }
 
       const data = await RazorpayCheckout.open(options);
 
-      // Verify payment with backend
       await this.verifyPayment(
         payload.apiBaseUrl,
         payload.orderId,
@@ -120,9 +105,6 @@ export class PaymentService {
     }
   }
 
-  /**
-   * Verify payment with backend
-   */
   private static async verifyPayment(
     apiBaseUrl: string,
     orderId: string,
@@ -145,7 +127,7 @@ export class PaymentService {
           razorpaySignature,
           status: 'confirmed',
         }),
-        credentials: 'include', // Include cookies for auth
+        credentials: 'include',
       });
 
       if (!response.ok) {
