@@ -9,11 +9,12 @@ export default ({ config }) => ({
     newArchEnabled: true,
     jsEngine: "hermes",
     icon: "./assets/dilsaycare.png",
+    plugins: ["expo-asset"],
     extra: {
       WEB_URL: process.env.WEB_URL || "https://dev.dilsaycare.in",
       eas: {
-        projectId: config?.extra?.eas?.projectId
-      }
+        projectId: config?.extra?.eas?.projectId,
+      },
     },
     splash: {
       image: "./assets/splash-logo.png",
