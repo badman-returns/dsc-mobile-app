@@ -1,22 +1,39 @@
 {
-  "name": "mobile-app",
+  "name": "dilsaycare-mobile",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "start:local": "bash scripts/start-local.sh",
+    "start:stage": "WEB_URL=https://dev.dilsaycare.in expo start",
+    "start:prod": "WEB_URL=https://dilsaycare.in expo start",
+    "ios:local": "bash scripts/start-local.sh --ios",
+    "ios:stage": "WEB_URL=https://dev.dilsaycare.in expo start --ios",
+    "android:local": "bash scripts/start-local.sh --android",
+    "android:stage": "WEB_URL=https://dev.dilsaycare.in expo start --android",
+    "update:dev:ip": "node scripts/update-dev-ip.js",
+    "build:dev": "eas build --profile development --platform android",
+    "build:staging": "eas build --profile staging --platform android",
+    "build:prod": "eas build --profile production --platform android",
+    "build:ios:staging": "eas build --profile staging --platform ios",
+    "build:ios:prod": "eas build --profile production --platform ios"
   },
   "dependencies": {
-    "expo": "~54.0.22",
-    "expo-status-bar": "~3.0.8",
-    "react": "19.1.0",
-    "react-native": "0.81.5"
+    "expo": "~52.0.0",
+    "expo-constants": "~17.0.8",
+    "expo-splash-screen": "~0.29.24",
+    "expo-status-bar": "~2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.9",
+    "react-native-webview": "13.12.5"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
-    "typescript": "~5.9.2"
+    "@babel/core": "^7.25.2",
+    "@types/react": "~18.3.12",
+    "typescript": "~5.3.3"
   },
   "private": true
 }
