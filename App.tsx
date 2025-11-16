@@ -52,6 +52,7 @@ export default function App() {
       // Handle payment requests
       if (data.type === PAYMENT_MESSAGE_TYPES.PAYMENT_REQUEST) {
         logger.info('Payment request received from WebView');
+        logger.info('Payment payload:', JSON.stringify(data));
         
         const paymentData = data as PaymentMessage;
         const result = await PaymentService.processPayment(
@@ -120,7 +121,7 @@ export default function App() {
         bounces={false}
         overScrollMode="always"
         nestedScrollEnabled={true}
-        webviewDebuggingEnabled={isDevelopment()}
+        webviewDebuggingEnabled={true}
       />
     </View>
   );
