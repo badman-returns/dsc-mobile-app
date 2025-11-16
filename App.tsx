@@ -115,10 +115,11 @@ export default function App() {
         domStorageEnabled
         sharedCookiesEnabled
         thirdPartyCookiesEnabled
-        contentInsetAdjustmentBehavior="never"
-        scrollEnabled
+        contentInsetAdjustmentBehavior="automatic"
+        scrollEnabled={true}
         bounces={false}
-        overScrollMode="never"
+        overScrollMode="always"
+        nestedScrollEnabled={true}
         webviewDebuggingEnabled={isDevelopment()}
       />
     </View>

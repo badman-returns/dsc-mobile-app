@@ -85,7 +85,11 @@ export class PaymentService {
         ...(logoBase64 && { image: logoBase64 }), // Add logo if loaded successfully
       };
 
-      logger.info('Initiating Razorpay payment', { orderId: payload.orderId });
+      logger.info('🎯 Using NATIVE Razorpay SDK', { 
+        orderId: payload.orderId,
+        platform: 'native',
+        hasLogo: !!logoBase64 
+      });
 
       // Double-check before calling
       if (!RazorpayCheckout || typeof RazorpayCheckout.open !== 'function') {
