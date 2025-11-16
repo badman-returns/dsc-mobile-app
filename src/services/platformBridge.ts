@@ -23,7 +23,6 @@ export class PlatformBridge {
 
     try {
       webViewRef.current.postMessage(JSON.stringify(message));
-      logger.success('Platform info sent to web', message.payload);
     } catch (error) {
       logger.error('Failed to send platform info', error);
     }

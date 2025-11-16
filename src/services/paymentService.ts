@@ -15,7 +15,7 @@ let RazorpayCheckout: any = null;
 try {
   RazorpayCheckout = require('react-native-razorpay').default;
 } catch (error) {
-  logger.warning('Native Razorpay module not available, will use WebView fallback');
+  // Silent fallback to WebView
 }
 
 export class PaymentService {
@@ -28,18 +28,10 @@ export class PaymentService {
     const isExpoGo = Constants.appOwnership === 'expo';
     
     if (isExpoGo) {
-      logger.info('Running in Expo Go, using WebView payment');
       return false;
     }
 
-    const isAvailable = !!(RazorpayCheckout && typeof RazorpayCheckout.open === 'function');
-    logger.info('Native Razorpay check', { 
-      isExpoGo,
-      hasModule: !!RazorpayCheckout,
-      hasOpenMethod: !!(RazorpayCheckout && typeof RazorpayCheckout.open === 'function'),
-      isAvailable 
-    });
-    return isAvailable;
+    return !!(RazorpayCheckout && typeof RazorpayCheckout.open === 'function');
   }
 
   /**
@@ -50,7 +42,6 @@ export class PaymentService {
   ): Promise<PaymentSuccessPayload | PaymentFailurePayload> {
     // If native module is not available (Expo Go), return error to fallback to WebView
     if (!this.isNativeRazorpayAvailable()) {
-      logger.warning('Native Razorpay not available, use WebView payment flow');
       return {
         orderId: payload.orderId,
         error: {
@@ -91,20 +82,12 @@ export class PaymentService {
         ...(logoBase64 && { image: logoBase64 }), // Add logo if loaded successfully
       };
 
-      logger.info('🎯 Using NATIVE Razorpay SDK', { 
-        orderId: payload.orderId,
-        platform: 'native',
-        hasLogo: !!logoBase64 
-      });
-
       // Double-check before calling
       if (!RazorpayCheckout || typeof RazorpayCheckout.open !== 'function') {
         throw new Error('Razorpay native module not properly initialized');
       }
 
       const data = await RazorpayCheckout.open(options);
-
-      logger.success('Payment successful', data);
 
       // Verify payment with backend
       await this.verifyPayment(
@@ -150,8 +133,6 @@ export class PaymentService {
     try {
       const verifyUrl = `${apiBaseUrl}/api/v1/payment/verify`;
 
-      logger.info('Verifying payment with backend', { orderId });
-
       const response = await fetch(verifyUrl, {
         method: 'POST',
         headers: {
@@ -171,8 +152,7 @@ export class PaymentService {
         throw new Error(`Verification failed with status: ${response.status}`);
       }
 
-      const result = await response.json();
-      logger.success('Payment verified successfully', result);
+      await response.json();
     } catch (error) {
       logger.error('Payment verification failed', error);
       throw error;

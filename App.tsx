@@ -31,7 +31,6 @@ export default function App() {
   }
 
   const handleWebViewLoad = () => {
-    logger.success('WebView loaded successfully');
     PlatformBridge.sendPlatformInfo(webViewRef);
   };
 
@@ -45,15 +44,11 @@ export default function App() {
       
       // Handle console logs
       if (data.type === 'CONSOLE_LOG') {
-        logger.info('[WebView Console]:', data.message);
         return;
       }
 
       // Handle payment requests
       if (data.type === PAYMENT_MESSAGE_TYPES.PAYMENT_REQUEST) {
-        logger.info('Payment request received from WebView');
-        logger.info('Payment payload:', JSON.stringify(data));
-        
         const paymentData = data as PaymentMessage;
         const result = await PaymentService.processPayment(
           paymentData.payload as PaymentRequestPayload
@@ -67,15 +62,9 @@ export default function App() {
           payload: result,
         };
 
-        logger.info('Sending payment response to WebView:', responseMessage);
-        
-        if (!webViewRef.current) {
-          logger.error('WebView ref not available!');
-          return;
+        if (webViewRef.current) {
+          webViewRef.current.postMessage(JSON.stringify(responseMessage));
         }
-
-        webViewRef.current.postMessage(JSON.stringify(responseMessage));
-        logger.info('Payment response sent successfully');
       }
     } catch (error) {
       logger.error('Error handling WebView message:', error);
@@ -103,12 +92,6 @@ export default function App() {
         )}
         onLoad={handleWebViewLoad}
         onError={handleWebViewError}
-        onLoadStart={() => logger.info('WebView starting to load...')}
-        onLoadProgress={({ nativeEvent }) => {
-          if (isDevelopment()) {
-            logger.debug(`WebView loading: ${Math.round(nativeEvent.progress * 100)}%`);
-          }
-        }}
         onHttpError={(syntheticEvent) => {
           logger.error('HTTP Error:', syntheticEvent.nativeEvent);
         }}
@@ -121,7 +104,7 @@ export default function App() {
         bounces={false}
         overScrollMode="always"
         nestedScrollEnabled={true}
-        webviewDebuggingEnabled={true}
+        webviewDebuggingEnabled={isDevelopment()}
       />
     </View>
   );
