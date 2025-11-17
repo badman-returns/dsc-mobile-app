@@ -25,6 +25,7 @@ if (isDevelopment()) {
 export default function App() {
   const { isReady } = useAppInitialization();
   const webViewRef = useRef<WebView>(null);
+  const previousUrlRef = useRef<string>(WEB_URL);
 
   if (!isReady) {
     return <SplashScreen />;
@@ -36,6 +37,22 @@ export default function App() {
 
   const handleWebViewError = (syntheticEvent: any) => {
     logger.error('WebView error:', syntheticEvent.nativeEvent);
+  };
+
+  const handleNavigationStateChange = (navState: any) => {
+    const newUrl = navState.url;
+    
+    if (previousUrlRef.current !== WEB_URL && previousUrlRef.current !== newUrl) {
+      logger.info('Reloading page to ensure fresh content:', newUrl);
+      if (webViewRef.current) {
+        webViewRef.current.injectJavaScript(`
+          window.location.reload(true);
+          true;
+        `);
+      }
+    }
+    
+    previousUrlRef.current = newUrl;
   };
 
   const handleWebViewMessage = async (event: any) => {
@@ -79,6 +96,7 @@ export default function App() {
         startInLoadingState
         injectedJavaScript={createViewportMeta()}
         onMessage={handleWebViewMessage}
+        onNavigationStateChange={handleNavigationStateChange}
         renderLoading={() => (
           <View style={styles.loadingContainer}>
             <Image
