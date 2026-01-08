@@ -1,26 +1,37 @@
-export default ({ config }) => ({
-  ...config,
+export default () => ({
   expo: {
-    name: "Dil Say Care",
+    name: "DilSayCare",
     slug: "dilsaycare-mobile",
     version: "1.0.0",
+
     orientation: "portrait",
     userInterfaceStyle: "light",
-    newArchEnabled: true,
+
     jsEngine: "hermes",
-    icon: "./assets/dilsaycare.png",
+    newArchEnabled: false,
+
+    icon: "./assets/icon.png",
+
     plugins: ["expo-asset"],
+
     extra: {
       WEB_URL: process.env.WEB_URL || "https://dev.dilsaycare.in",
       eas: {
-        projectId: config?.extra?.eas?.projectId,
+        projectId: "5fe97273-3491-47ea-b39a-bd5d8c4f0e5d",
       },
     },
+
     splash: {
       image: "./assets/splash-logo.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
+
+    statusBar: {
+      backgroundColor: "#ffffff",
+      style: "dark",
+    },
+
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.dilsaycare.mobile",
@@ -28,14 +39,11 @@ export default ({ config }) => ({
         UIViewControllerBasedStatusBarAppearance: false,
       },
     },
+
     android: {
       package: "com.dilsaycare.mobile",
       adaptiveIcon: {
-        foregroundImage: "./assets/dilsaycare.png",
-        backgroundColor: "#ffffff",
-      },
-      statusBar: {
-        translucent: true,
+        foregroundImage: "./assets/icon.png",
         backgroundColor: "#ffffff",
       },
     },

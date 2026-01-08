@@ -22,7 +22,7 @@
     "build:ios:prod": "eas build --profile production --platform ios"
   },
   "dependencies": {
-    "expo": "~52.0.0",
+    "expo": "~52.0.48",
     "expo-asset": "~11.0.5",
     "expo-constants": "~17.0.8",
     "expo-file-system": "~18.0.12",
@@ -37,6 +37,13 @@
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
     "typescript": "~5.3.3"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["react-native-razorpay"]
+      }
+    }
   },
   "private": true
 }

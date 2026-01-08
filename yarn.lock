@@ -815,10 +815,10 @@
   dependencies:
     uuid "^8.0.0"
 
-"@expo/cli@0.22.26":
-  version "0.22.26"
-  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.22.26.tgz#b61b5223af484cc50f83eac3eaaa9d53e941ade9"
-  integrity sha512-I689wc8Fn/AX7aUGiwrh3HnssiORMJtR2fpksX+JIe8Cj/EDleblYMSwRPd0025wrwOV9UN1KM/RuEt/QjCS3Q==
+"@expo/cli@0.22.27":
+  version "0.22.27"
+  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.22.27.tgz#22b64e1b02908390ab397693699986a5c70f72a2"
+  integrity sha512-MZ3s68+OFQZWljAiCdwL+dL+xZudpkmhq0A2Qb4+p6MNp386WJyAYineXtiLJVww/8ohIfUxOL10vnaPdDVl4w==
   dependencies:
     "@0no-co/graphql.web" "^1.0.8"
     "@babel/runtime" "^7.20.0"
@@ -2700,13 +2700,13 @@ expo-status-bar@~2.0.0:
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-2.0.1.tgz#fc07726346dc30fbb68aadb0d7890b34fba42eee"
   integrity sha512-AkIPX7jWHRPp83UBZ1iXtVvyr0g+DgBVvIXTtlmPtmUsm8Vq9Bb5IGj86PW8osuFlgoTVAg7HI/+Ok7yEYwiRg==
 
-expo@~52.0.0:
-  version "52.0.47"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.47.tgz#b2a25bdcbd2059094396750e896946d2e2e61753"
-  integrity sha512-Mkvl7Qi2k+V3FdNRUD+yDj8GqU4IiYulLfl36BmSZs8lh/kCYPhTiyBLiEGPfz7d25QKbPWG727ESozbkbvatw==
+expo@~52.0.48:
+  version "52.0.48"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.48.tgz#47f83b3b95f4a8970db4aa8e83246105d4a7c7e2"
+  integrity sha512-/HR/vuo57KGEWlvF3GWaquwEAjXuA5hrOCsaLcZ3pMSA8mQ27qKd1jva4GWzpxXYedlzs/7LLP1XpZo6hXTsog==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.22.26"
+    "@expo/cli" "0.22.27"
     "@expo/config" "~10.0.11"
     "@expo/config-plugins" "~9.0.17"
     "@expo/fingerprint" "0.11.11"
