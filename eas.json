@@ -13,6 +13,7 @@
         "WEB_URL": "http://192.168.31.13:5173"
       }
     },
+
     "staging": {
       "distribution": "internal",
       "android": {
@@ -22,21 +23,26 @@
         "WEB_URL": "https://dev.dilsaycare.in"
       }
     },
+
+    "staging-play": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "WEB_URL": "https://dev.dilsaycare.in"
+      }
+    },
+
     "production": {
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle"
       },
       "env": {
         "WEB_URL": "https://dilsaycare.in"
       }
-    },
-    "preview": {
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
     }
   },
+
   "submit": {
     "production": {}
   }
